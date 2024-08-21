@@ -2,7 +2,7 @@
 
 """A simple LRU Module"""
 
-from collections import deque
+from collections import OrderedDict
 
 from base_caching import BaseCaching
 
@@ -12,7 +12,7 @@ class LRUCache(BaseCaching):
 
     def __init__(self):
         super().__init__()
-        self.access = deque()
+        self.cache_data = OrderedDict()
 
     def put(self, key, item):
         """
@@ -22,16 +22,17 @@ class LRUCache(BaseCaching):
             key: the key to be set in the dictionary
             item: the value to be set for the key
         """
+        if not key or not item:
+            return
+
         cache = self.cache_data
 
-        if key in cache:
-            self.access.remove(key)
-        elif len(cache) >= self.MAX_ITEMS:
-            oldest = self.access.popleft()
-            del cache[oldest]
+        if len(cache) == self.MAX_ITEMS and key not in cache:
+            oldest, _ = cache.popitem(last=False)
             print('DISCARD: ' + oldest)
+
         cache[key] = item
-        self.access.append(key)
+        cache.move_to_end(key)
 
     def get(self, key):
         """
@@ -43,6 +44,5 @@ class LRUCache(BaseCaching):
         """
 
         if key in self.cache_data:
-            self.access.remove(key)
-            self.access.append(key)
+            self.cache_data.move_to_end(key)
         return self.cache_data.get(key)
