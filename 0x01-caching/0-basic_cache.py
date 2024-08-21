@@ -4,7 +4,7 @@
 
 from functools import lru_cache
 
-from base import BaseCaching
+BaseCaching = __import__('base').BaseCaching
 
 
 @lru_cache(maxsize=None)
