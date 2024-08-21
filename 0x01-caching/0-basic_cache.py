@@ -2,12 +2,10 @@
 
 """A basic cache module"""
 
-from functools import lru_cache
 
 BaseCaching = __import__('base').BaseCaching
 
 
-@lru_cache(maxsize=None)
 class BasicCache(BaseCaching):
     """
     A simple basic caching implementation
