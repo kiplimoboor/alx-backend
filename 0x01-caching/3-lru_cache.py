@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""A LRU Module"""
+"""A simple LRU Module"""
 
 from collections import deque
 
@@ -42,9 +42,7 @@ class LRUCache(BaseCaching):
             the value linked to the key, None otherwise
         """
 
-        if key not in self.cache_data:
-            return
-
-        self.access.remove(key)
-        self.access.append(key)
+        if key in self.cache_data:
+            self.access.remove(key)
+            self.access.append(key)
         return self.cache_data.get(key)
